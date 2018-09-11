@@ -1,6 +1,7 @@
 
 
 # bare-metal-server-integration-with-nsxt
+This repository contains Ansible playbooks for supporting Bare Metal Server integration with NSX-T.
 
 ## Overview
 
@@ -21,6 +22,7 @@
 ## Documentation
 
 ## Releases & Major Branches
+The playbooks in master branch are compatible with NSX-t 2.3.0.
 
 ## Contributing
 
@@ -30,3 +32,4 @@ questions about the CLA process, please refer to our [FAQ](https://cla.vmware.co
 refer to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
+See the [License](LICENSE.txt).
