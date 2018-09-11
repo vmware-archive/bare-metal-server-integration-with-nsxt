@@ -1,0 +1,15 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+---
+- hosts: servers_restoration
+  tasks:
+    - name: Get Config Mode
+      command: bash -c "cat /etc/vmware/nsx-bm/bms.conf |grep config_mode"
+      register: ConfigMode
+    - import_tasks: restore/bms_static_dhcp_restore.yml
+      when: (ConfigMode.stdout == "config_mode=static") or
+            (ConfigMode.stdout == "config_mode=dhcp")
+    - import_tasks: restore/bms_migrate_restore.yml
+      when: ConfigMode.stdout == "config_mode=migrate"

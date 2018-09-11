@@ -1,0 +1,17 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+---
+- hosts: TransportNodes
+  tasks:
+    - name: get miss dependency list
+      command: cat /opt/baremetal/miss-dependency
+      register: miss_dependency
+    - debug:
+        msg: "{{miss_dependency.stdout}}"
+    - name: uninstall miss dependency
+      package:
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ miss_dependency.stdout_lines }}"

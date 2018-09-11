@@ -1,0 +1,19 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: create trust group by vif
+  uri:
+    url: https://{{ hostvars.policymanager.ip }}/policy/api/v1/infra/domains/bare-metal/groups/trustvifgroup
+    method: PUT
+    user: "{{ hostvars.nsxmanager.username }}"
+    password: "{{ hostvars.nsxmanager.password }}"
+    headers:
+      Content-Type: "application/json"
+    body: "{{ lookup('template', 'create_trustvif_group.json.j2') }}"
+    return_contents: yes
+    force_basic_auth: yes
+    validate_certs: no
+    status_code: 200
+    body_format: json
+

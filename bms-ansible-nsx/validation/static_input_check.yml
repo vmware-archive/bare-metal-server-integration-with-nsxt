@@ -1,0 +1,10 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: check static ip
+  fail: msg="static ip is not defined"
+  when: static_ip is not defined
+- name: check netmask
+  fail: msg="netmask is not defined"
+  when: netmask is not defined

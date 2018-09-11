@@ -1,0 +1,11 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: add bootup script for Ubuntu
+  command: update-rc.d nsx-baremetal defaults 9
+  when: os_type.stdout == "Ubuntu"
+- name: add bootup script for RHEL/CentOS
+  command: chkconfig --add nsx-baremetal
+  when: (os_type.stdout == "RedHatEnterpriseServer") or
+        (os_type.stdout == "CentOS")

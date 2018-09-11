@@ -1,0 +1,32 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- import_tasks: system/get_os_type.yml
+- import_tasks: config/app_intf_name.yml
+- name: dhcp exit
+  command: dhclient -r {{ app_intf_name }}
+  when: ConfigMode.stdout == "config_mode=dhcp"
+- name: detach vif from int-br
+  command: ovs-vsctl -- --if-exists del-port {{ app_intf_name }}-peer
+- name: delete veth
+  command: bash -c "ip link del {{ app_intf_name }} &> /dev/null"
+  ignore_errors: yes
+- import_tasks: lsp/delete_lsp.yml
+- import_tasks: system/del_service_bootup.yml
+- name: delete config file
+  file:
+    path: /etc/vmware/nsx-bm
+    state: absent
+- name: delete init script
+  file:
+    path: /etc/init.d/nsx-baremetal
+    state: absent
+- name: delete bms config
+  block:
+    - name: remove bms config
+      file:
+        path: /etc/vmware/nsx/nsx-baremetal.xml
+        state: absent
+    - name: restart nsx-agent
+      command: /etc/init.d/nsx-agent restart

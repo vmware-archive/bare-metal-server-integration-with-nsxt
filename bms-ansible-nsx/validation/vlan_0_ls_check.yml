@@ -1,0 +1,14 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: check ls id or is name
+  fail: msg="ls_id or ls_name not defined"
+  when: (ls_id is not defined) and (ls_name is not defined)
+- name: ls id assignment
+  set_fact: lsid={{ ls_id }}
+  when: ls_id is defined
+- import_tasks: validation/vlan_0_ls_check_by_id.yml
+  when: ls_id is defined
+- import_tasks: validation/vlan_0_ls_check_by_name.yml
+  when: (ls_name is defined) and (ls_id is not defined)

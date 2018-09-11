@@ -1,0 +1,15 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: generate config file
+  block:
+    - name: create directory
+      file:
+        path: /etc/vmware/nsx-bm
+        state: directory
+        mode: 0755
+    - name: generate config mode
+      copy:
+        content: "{{ config_mode }}"
+        dest: /etc/vmware/nsx-bm/bms.conf

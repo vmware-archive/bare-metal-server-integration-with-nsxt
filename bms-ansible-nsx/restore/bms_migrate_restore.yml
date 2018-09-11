@@ -1,0 +1,34 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- import_tasks: system/get_os_type.yml
+- import_tasks: validation/migration_input_check.yml
+- import_tasks: config/app_intf_name.yml
+- name: Create restore script file
+  template:
+    src: templates/bms_migrate_restore.j2
+    dest: /tmp/bms_restore.sh
+    owner: root
+    group: root
+    mode: 0755
+- name: Run restore script
+  command: bash /tmp/bms_restore.sh
+- import_tasks: lsp/delete_lsp.yml
+- import_tasks: system/del_service_bootup.yml
+- name: delete config file
+  file:
+    path: /etc/vmware/nsx-bm
+    state: absent
+- name: delete init script
+  file:
+    path: /etc/init.d/nsx-baremetal
+    state: absent
+- name: delete bms config
+  block:
+    - name: remove bms config
+      file:
+        path: /etc/vmware/nsx/nsx-baremetal.xml
+        state: absent
+    - name: restart nsx-agent
+      command: /etc/init.d/nsx-agent restart

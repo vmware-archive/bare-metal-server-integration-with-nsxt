@@ -1,0 +1,49 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+---
+- hosts: servers_migration
+  any_errors_fatal: true
+  tasks:
+    - name: config underlay mode
+      set_fact:
+        underlay_mode: "true"
+    - import_tasks: system/get_os_type.yml
+    - import_tasks: config/tn_uuid.yml
+    - import_tasks: lsp/vif_id.yml
+    - import_tasks: validation/vlan_0_ls_check.yml
+    - import_tasks: vif/int_br_name.yml
+    - import_tasks: validation/vif_id_check.yml
+    - import_tasks: validation/migration_input_check.yml
+    - import_tasks: lsp/create_lsp.yml
+    - import_tasks: config/bms_config.yml
+    - import_tasks: config/app_intf_name.yml
+    - name: generate config file
+      block:
+        - name: remove old config file
+          file:
+            path: /etc/vmware/nsx-bm/bms.conf
+            state: absent
+        - name: create directory
+          file:
+            path: /etc/vmware/nsx-bm
+            state: directory
+            mode: 0755
+    - name: create migrate script
+      template:
+        src: templates/bms_migrate.j2
+        dest: /tmp/bms_migrate.sh
+        owner: root
+        group: root
+        mode: 0755
+    - name: create bootup script
+      template:
+        src: templates/bms_migrate_init.j2
+        dest: /etc/init.d/nsx-baremetal
+        owner: root
+        group: root
+        mode: 0755
+    - name: Run migrate script
+      command: bash /tmp/bms_migrate.sh
+    - import_tasks: system/add_service_bootup.yml

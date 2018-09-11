@@ -1,0 +1,13 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: get OS type
+  command: /usr/bin/lsb_release -si
+  register: os_type
+- name: check OS type
+  fail: msg="unsupport OS type"
+  when: (os_type.stdout == "") or
+        ((os_type.stdout != "Ubuntu") and
+        (os_type.stdout != "RedHatEnterpriseServer") and
+        (os_type.stdout != "CentOS"))

@@ -1,0 +1,16 @@
+{
+  "logical_switch_id": "{{ ls_id }}",
+  "attachment": {
+    "attachment_type": "VIF",
+    "id": "{{ vif_id }}",
+    "context": {
+      "resource_type": "VifAttachmentContext",
+      "allocate_addresses": "None",
+      "vif_type": "INDEPENDENT",
+      "transport_node_uuid": "{{ tn_uuid.stdout }}"
+    }
+  },
+  "address_bindings": [],
+  "admin_state": "UP"
+}
+

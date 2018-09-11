@@ -1,0 +1,50 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+---
+- hosts: TransportNodes
+  tasks:
+    - name: is ubuntu
+      stat:
+        path: /etc/lsb-release
+      register: ubuntu_stat_result
+    - name: is rhel
+      stat:
+        path: /etc/redhat-release
+      register: rhel_stat_result
+    - name: create check rpm dependency script
+      template:
+        src: templates/check_rpm_dependency.j2
+        dest: /tmp/check_rpm_dependency.sh
+        owner: root
+        group: root
+        mode: 0755
+      when: rhel_stat_result.stat.exists == True
+    - name: create check dpkg dependency script
+      template:
+        src: templates/check_dpkg_dependency.j2
+        dest: /tmp/check_dpkg_dependency.sh
+        owner: root
+        group: root
+        mode: 0755
+      when: ubuntu_stat_result.stat.exists == True
+    - name: run check rpm dependency script
+      command: bash /tmp/check_rpm_dependency.sh
+      when: rhel_stat_result.stat.exists == True
+    - name: run check dpkg dependency script
+      command: bash /tmp/check_dpkg_dependency.sh
+      when: ubuntu_stat_result.stat.exists == True
+    - name: set rpm dependency
+      set_fact:
+        dependency: "{{ rpm_dependency }}"
+      when: rhel_stat_result.stat.exists == True
+    - name: set dpkg dependency
+      set_fact:
+        dependency: "{{ dpkg_dependency }}"
+      when: ubuntu_stat_result.stat.exists == True
+    - name: install dependency
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ dependency }}"

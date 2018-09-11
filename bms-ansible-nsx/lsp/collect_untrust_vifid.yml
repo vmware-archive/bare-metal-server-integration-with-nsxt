@@ -1,0 +1,24 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: get ls id
+  uri:
+    url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports/{{ item }}
+    method: GET
+    user: "{{ hostvars.nsxmanager.username }}"
+    password: "{{ hostvars.nsxmanager.password }}"
+    headers:
+      Content-Type: "application/json"
+    return_contents: yes
+    force_basic_auth: yes
+    validate_certs: no
+    status_code: 200
+    body_format: json
+  register: lsp_info_response
+- set_fact: vif_id="{{lsp_info_response.json.attachment.id}}"
+- set_fact:
+    vif_untrust_list: "{{ vif_untrust_list }} + [ '{{ vif_id }}' ]"
+- debug: var=vif_untrust_list
+
+

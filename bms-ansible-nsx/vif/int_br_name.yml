@@ -1,0 +1,10 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: get integration bridge name
+  command: bash -c "ovs-vsctl list-br | while read line; do if [ $(ovs-vsctl br-get-external-id $line) ]; then echo $line; fi; done"
+  register: int_br_name
+- name: check integration bridge name
+  fail: msg="integration bridge not found"
+  when: int_br_name.stdout== ""

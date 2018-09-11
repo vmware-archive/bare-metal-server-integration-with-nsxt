@@ -1,0 +1,36 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: check ls id and vif id
+  fail: msg="ls_id or vif_id not defined"
+  when: (ls_id is not defined) or (vif_id is not defined)
+- name: create Logical Switch Port
+  uri:
+    url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports
+    method: POST
+    user: "{{ hostvars.nsxmanager.username }}"
+    password: "{{ hostvars.nsxmanager.password }}"
+    headers:
+      Content-Type: "application/json"
+    body: "{{ lookup('template', 'create_lsp.json.j2') }}"
+    return_contents: yes
+    force_basic_auth: yes
+    validate_certs: no
+    status_code: 201
+    body_format: json
+  register: lp_response
+- name: check logical switch port id
+  fail: msg="logical switch port id not found"
+  when: lp_response.json.id == ""
+- name: save lsp id
+  block:
+    - name: create directory
+      file:
+        path: /etc/vmware/nsx-bm
+        state: directory
+        mode: 0755
+    - name: generate logical switch port config
+      copy:
+        content: "{{ lp_response.json.id }}"
+        dest: /etc/vmware/nsx-bm/lpid

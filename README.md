@@ -3,22 +3,6 @@
 # bare-metal-server-integration-with-nsxt
 This repository contains Ansible playbooks for supporting Bare Metal Server integration with NSX-T.
 
-## Overview
-
-## Try it out
-
-### Prerequisites
-
-* Prereq 1
-* Prereq 2
-* Prereq 3
-
-### Build & Run
-
-1. Step 1
-2. Step 2
-3. Step 3
-
 ## Documentation
 
 ## Releases & Major Branches

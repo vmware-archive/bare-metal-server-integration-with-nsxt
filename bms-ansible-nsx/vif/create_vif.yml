@@ -1,0 +1,27 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: check app interface name
+  fail: msg="app interface name is not defined"
+  when: (app_intf_name is not defined) or
+        (app_intf_name == "")
+- name: delete legacy app interface
+  command: bash -c "ip link del {{ app_intf_name }} &> /dev/null | cat"
+- name: create veth pair
+  command: ip link add {{ app_intf_name }} type veth peer name {{ app_intf_name }}-peer
+- name: bring veth up
+  block:
+    - name: bring veth up
+      command: ip link set {{ app_intf_name }} up
+    - name: bring veth peer up
+      command: ip link set {{ app_intf_name }}-peer up
+- name: get app interface MAC address
+  block:
+    - command: bash -c "ip link show {{ app_intf_name }} |grep ether|awk '{print $2}'"
+      register: mac
+    - set_fact:
+        mac_address: "{{ mac.stdout }}"
+  when: mac_address is not defined
+- name: set MAC address
+  command: ip link set dev {{ app_intf_name }} address {{ mac_address }}

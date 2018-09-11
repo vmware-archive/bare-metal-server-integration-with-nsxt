@@ -1,0 +1,7 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: Validate migrate interface
+  fail: msg="migrate interface is not defined"
+  when: migrate_intf is not defined
