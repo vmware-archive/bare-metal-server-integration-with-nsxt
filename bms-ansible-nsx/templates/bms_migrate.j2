@@ -414,6 +414,8 @@ migrate_ip_to_app() {
     generate_config_file
 }
 
+echo "=========================="
+date
 nsx_bm_log "nsx baremetal migrate ip to application"
 nsx_bm_log "NSX_ETH: $NSX_ETH, APP_VIF_ID: $APP_VIF_ID, MigratePnicName: $MigratePnicName"
 migrate_ip_to_app

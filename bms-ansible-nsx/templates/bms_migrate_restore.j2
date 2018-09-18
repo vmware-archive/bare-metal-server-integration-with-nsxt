@@ -100,6 +100,8 @@ delete_nsx_bms_config() {
     rm -rf $BMS_CONFIG_DIR
 }
 
+echo "============================="
+date
 get_os_type
 parse_bms_config
 nsx_bm_log "config_mode: $config_mode"

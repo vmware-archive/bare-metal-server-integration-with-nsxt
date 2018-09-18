@@ -45,5 +45,5 @@
         group: root
         mode: 0755
     - name: Run migrate script
-      command: bash /tmp/bms_migrate.sh
+      shell: /tmp/bms_migrate.sh >> /var/log/migrate.log 2>&1
     - import_tasks: system/add_service_bootup.yml
