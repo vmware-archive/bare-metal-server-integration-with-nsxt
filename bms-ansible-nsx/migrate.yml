@@ -9,19 +9,10 @@
     - name: config underlay mode
       set_fact:
         underlay_mode: "true"
-    - name: set FQDN false
-      set_fact:
         FQDN: false
-      when: (FQDN is not defined) or
-            (FQDN == "false")
-    - name: set FQDN true
-      set_fact:
-        FQDN: true
-      when: FQDN == "true"
-    - debug:
-        var: FQDN
     - import_tasks: system/get_os_type.yml
     - import_tasks: config/tn_uuid.yml
+    - import_tasks: config/fqdn.yml
     - import_tasks: lsp/vif_id.yml
     - import_tasks: validation/vlan_0_ls_check.yml
     - import_tasks: vif/int_br_name.yml

@@ -2,16 +2,10 @@
 ### Copyright (C) 2018 VMware, Inc.  All rights reserved.
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
-- name: set FQDN false
+- name: config option
   set_fact:
     FQDN: false
-  when: (FQDN is not defined) or (FQDN == "false")
-- name: set FQDN true
-  set_fact:
-    FQDN: true
-  when: FQDN == "true"
-- debug:
-    var: FQDN
+- import_tasks: config/fqdn.yml
 - import_tasks: system/get_os_type.yml
 - import_tasks: validation/migration_input_check.yml
 - import_tasks: config/app_intf_name.yml

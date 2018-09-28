@@ -89,6 +89,7 @@ $ansible-playbook -i hosts restore.yml
 In underlay mode, since management and application traffic share a single IP, we need a way to differentiate the forwarding of the types of traffic, and the management traffic should bypass NSX logical pipeline, otherwise any misconfiguration of NSX networking and policies will cause connectivity loss of the Bare Metal server and could not be recovered.  
 So here we add high priority flows(classified by remote IP, proto, local/remote ports) for the management traffic when setup application interface, we call high priority flow as bootstrap flow;
 NSX Manager and Controller endpoints will be loaded in bootstrap flow by default;
+If Manager/Controller endpoint is FQDN, that won't support bootstrap flow.
 
 If User want to add/delete/update bootstrap flow, pls. follow below steps:
 ```bash
@@ -96,11 +97,6 @@ If User want to add/delete/update bootstrap flow, pls. follow below steps:
 2. $ansible-playbook -i hosts config/bms_update.yml 
 ```
 
-If Manager/Controller endpoint is FQDN, that will not support bootstrap flow, there is a FQDN option in inventory to control it.
-false is by default
-```bash
-FQDN=false/true
-```
 
 ### 6. Prepare host with dependency package
 ```bash
