@@ -2,6 +2,16 @@
 ### Copyright (C) 2018 VMware, Inc.  All rights reserved.
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
+- name: set FQDN false
+  set_fact:
+    FQDN: false
+  when: (FQDN is not defined) or (FQDN == "false")
+- name: set FQDN true
+  set_fact:
+    FQDN: true
+  when: FQDN == "true"
+- debug:
+    var: FQDN
 - import_tasks: system/get_os_type.yml
 - import_tasks: validation/migration_input_check.yml
 - import_tasks: config/app_intf_name.yml
@@ -30,5 +40,7 @@
       file:
         path: /etc/vmware/nsx/nsx-baremetal.xml
         state: absent
+      when: not FQDN
     - name: restart nsx-agent
       command: /etc/init.d/nsx-agent restart
+      when: not FQDN

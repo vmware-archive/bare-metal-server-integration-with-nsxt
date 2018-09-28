@@ -19,25 +19,20 @@ rpm_dependency=["tcpdump", "boost-filesystem", "PyYAML", "boost-iostreams", "boo
 
 dpkg_dependency=["libunwind8", "libgflags2v5", "libgoogle-perftools4", "traceroute", "python-mako", "python-simplejson", "python-unittest2", "python-yaml", "python-netaddr", "libboost-filesystem1.58.0", "libboost-chrono1.58.0", "libgoogle-glog0v5", "dkms", "libboost-date-time1.58.0", "python-protobuf", "python-gevent", "libsnappy1v5", "libleveldb1v5", "libboost-program-options1.58.0", "libboost-thread1.58.0", "libboost-iostreams1.58.0", "libvirt0"]
 
+# FQDN support for MP/CCP if true, false by default
+FQDN=false
 
 # host group for servers
 [servers_static]
 server1 ansible_ssh_host= static_ip= netmask= ls_name=
-server2 ansible_ssh_host= static_ip= netmask= ls_name=
-server3 ansible_ssh_host= static_ip= netmask= ls_name=
-server4 ansible_ssh_host= static_ip= netmask= ls_name=
 
 [servers_dhcp]
 
 [servers_migration]
-server5 ansible_ssh_host=
 server6 ansible_ssh_host= migrate_intf= ls_name=
 
 [servers_restoration]
-server1
-server2
-server3
-server4
+server6
 
 # NSX Configuration
 [NSX]
