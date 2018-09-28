@@ -96,6 +96,12 @@ If User want to add/delete/update bootstrap flow, pls. follow below steps:
 2. $ansible-playbook -i hosts config/bms_update.yml 
 ```
 
+If Manager/Controller endpoint is FQDN, that will not support bootstrap flow, there is a FQDN option in inventory to control it.
+false is by default
+```bash
+FQDN=false/true
+```
+
 ### 6. Prepare host with dependency package
 ```bash
 $ansible-playbook -i hosts prepare.yml
