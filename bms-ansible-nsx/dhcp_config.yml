@@ -22,6 +22,18 @@
     - import_tasks: vif/create_vif.yml
     - import_tasks: vif/attach_vif.yml
     - import_tasks: route/route.yml
+    - name: create bm dir
+      file:
+        path: /opt/vmware/nsx-bm
+        state: directory
+        mode: 0755
+    - name: create manual restore script
+      copy:
+        src: ./manual/static_dhcp_manual_restore.sh
+        dest: /opt/vmware/nsx-bm/static_dhcp_manual_restore.sh
+        owner: root
+        group: root
+        mode: 0755
     - name: config DHCP on App NIC
       command: dhclient -nw {{ app_intf_name }}
     - import_tasks: config/config.yml

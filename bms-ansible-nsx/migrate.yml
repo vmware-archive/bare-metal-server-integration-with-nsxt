@@ -33,6 +33,18 @@
             path: /etc/vmware/nsx-bm
             state: directory
             mode: 0755
+        - name: create bm dir
+          file:
+            path: /opt/vmware/nsx-bm
+            state: directory
+            mode: 0755
+    - name: create manual restore script
+      copy:
+        src: ./manual/migration_manual_restore.sh
+        dest: /opt/vmware/nsx-bm/migration_manual_restore.sh
+        owner: root
+        group: root
+        mode: 0755
     - name: create migrate script
       template:
         src: templates/bms_migrate.j2
@@ -47,6 +59,6 @@
         owner: root
         group: root
         mode: 0755
+    - import_tasks: system/add_service_bootup.yml
     - name: Run migrate script
       shell: /tmp/bms_migrate.sh >> /var/log/migrate.log 2>&1
-    - import_tasks: system/add_service_bootup.yml

@@ -3,7 +3,7 @@
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
 - name: get fqdn tag
-  command: bash -c "grep fqdn /etc/vmware/nsx/controller-info.xml | cat"
+  command: bash -c "grep \<fqdn\> /etc/vmware/nsx/controller-info.xml | cat"
   register: fqdn_tag
 - name: set fqdn option
   set_fact:

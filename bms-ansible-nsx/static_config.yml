@@ -21,6 +21,18 @@
     - import_tasks: config/config.yml
     - import_tasks: config/app_intf_name.yml
     - import_tasks: vif/create_vif.yml
+    - name: create bm dir
+      file:
+        path: /opt/vmware/nsx-bm
+        state: directory
+        mode: 0755
+    - name: create manual restore script
+      copy:
+        src: ./manual/static_dhcp_manual_restore.sh
+        dest: /opt/vmware/nsx-bm/static_dhcp_manual_restore.sh
+        owner: root
+        group: root
+        mode: 0755
     - name: set IP address
       command: ifconfig {{ app_intf_name }} {{ static_ip }} netmask {{ netmask }}
     - import_tasks: vif/attach_vif.yml

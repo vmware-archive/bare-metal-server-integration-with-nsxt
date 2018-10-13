@@ -38,3 +38,7 @@
     - name: restart nsx-agent
       command: /etc/init.d/nsx-agent restart
       when: not FQDN
+- name: delete manual script
+  file:
+    path: /opt/vmware/nsx-bm
+    state: absent

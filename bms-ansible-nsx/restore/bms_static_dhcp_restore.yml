@@ -30,3 +30,7 @@
         state: absent
     - name: restart nsx-agent
       command: /etc/init.d/nsx-agent restart
+- name: delete manual script
+  file:
+    path: /opt/vmware/nsx-bm
+    state: absent
