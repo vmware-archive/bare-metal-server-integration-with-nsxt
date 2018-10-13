@@ -102,6 +102,7 @@ delete_nsx_bms_config() {
 
 echo "============================="
 date
+ifconfig
 get_os_type
 parse_bms_config
 nsx_bm_log "config_mode: $config_mode"
@@ -129,4 +130,5 @@ if [ "$migrate_interface" == "$defaultGatewayDev" ]; then
 fi
 
 delete_nsx_bms_config
+ifconfig
 
