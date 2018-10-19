@@ -1,4 +1,5 @@
 {
+  "display_name": "{{ ansible_hostname }}/{{ app_intf_name }}@{{ tn_uuid.stdout }}",
   "logical_switch_id": "{{ ls_id }}",
   "attachment": {
     "attachment_type": "VIF",
@@ -11,6 +12,12 @@
     }
   },
   "address_bindings": [],
-  "admin_state": "UP"
+  "admin_state": "UP",
+  "tags": [
+    {
+        "scope": "bm/os_type",
+        "tag": "{{ os_type.stdout }}"
+    }
+  ]
 }
 
