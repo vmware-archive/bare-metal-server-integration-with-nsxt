@@ -8,8 +8,8 @@
   tasks:
     - name: config underlay mode
       set_fact:
-        config_mode: "config_mode=static"
-        underlay_mode: "false"
+        config_mode: 'config_mode=static'
+        underlay_mode: 'false'
     - import_tasks: system/get_os_type.yml
     - import_tasks: config/tn_uuid.yml
     - import_tasks: lsp/vif_id.yml
