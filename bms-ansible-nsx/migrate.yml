@@ -8,7 +8,7 @@
   tasks:
     - name: config underlay mode
       set_fact:
-        underlay_mode: "true"
+        underlay_mode: 'true'
         FQDN: false
     - import_tasks: system/get_os_type.yml
     - import_tasks: config/tn_uuid.yml
