@@ -2,6 +2,7 @@
 
 # bare-metal-server-integration-with-nsxt
 This repository contains Ansible playbooks for supporting Bare Metal Server integration with NSX-T.
+Require Ansbile Playbook version equal or greater than 2.4.3.0.
 
 ## Documentation
 

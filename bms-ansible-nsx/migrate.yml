@@ -38,6 +38,13 @@
             path: /opt/vmware/nsx-bm
             state: directory
             mode: 0755
+    - name: create debug script
+      copy:
+        src: ./debug/debug.sh
+        dest: /opt/vmware/nsx-bm/debug.sh
+        owner: root
+        group: root
+        mode: 0755
     - name: create manual restore script
       copy:
         src: ./manual/migration_manual_restore.sh
@@ -45,10 +52,24 @@
         owner: root
         group: root
         mode: 0755
-    - name: create migrate script
+    - name: create migrate script part 1
       template:
         src: templates/bms_migrate.j2
         dest: /tmp/bms_migrate.sh
+        owner: root
+        group: root
+        mode: 0755
+    - name: create migrate script part 2
+      template:
+        src: templates/migrate.j2
+        dest: /tmp/migrate.sh
+        owner: root
+        group: root
+        mode: 0755
+    - name: create revert script
+      template:
+        src: templates/revert.j2
+        dest: /tmp/revert.sh
         owner: root
         group: root
         mode: 0755
@@ -62,3 +83,12 @@
     - import_tasks: system/add_service_bootup.yml
     - name: Run migrate script
       shell: /tmp/bms_migrate.sh >> /var/log/migrate.log 2>&1
+      register: migrate_result
+      ignore_errors: yes
+    - debug: msg="{{migrate_result.rc}}"
+    - debug: msg="maigrate failed, pls. check /var/log/migrate.log"
+      when: migrate_result.rc != 0
+    - name: show log
+      shell: cat /var/log/migrate.log
+      register: migrate_log_output
+    - debug: msg="{{migrate_log_output.stdout}}"
