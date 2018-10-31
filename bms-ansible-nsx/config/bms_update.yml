@@ -11,7 +11,7 @@
       when: underlay_mode is not defined
     - name: Generate underlay config file
       template:
-        src: templates/nsx-baremetal.j2
+        src: ../templates/nsx-baremetal.j2
         dest: /etc/vmware/nsx/nsx-baremetal.xml
         owner: nsx-agent
         group: nsx-agent

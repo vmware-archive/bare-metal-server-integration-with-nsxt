@@ -17,7 +17,7 @@ ansible_ssh_pass=
 
 rpm_dependency=["tcpdump", "boost-filesystem", "PyYAML", "boost-iostreams", "boost-chrono", "python-mako", "python-netaddr", "python-six", "gperftools-libs", "libunwind", "snappy", "boost-date-time", "c-ares", "redhat-lsb-core", "wget", "net-tools", "yum-utils", "lsof", "libvirt-libs", "python-gevent", "libev", "python-greenlet"]
 
-dpkg_dependency=["libunwind8", "libgflags2v5", "libgoogle-perftools4", "traceroute", "python-mako", "python-simplejson", "python-unittest2", "python-yaml", "python-netaddr", "libboost-filesystem1.58.0", "libboost-chrono1.58.0", "libgoogle-glog0v5", "dkms", "libboost-date-time1.58.0", "python-protobuf", "python-gevent", "libsnappy1v5", "libleveldb1v5", "libboost-program-options1.58.0", "libboost-thread1.58.0", "libboost-iostreams1.58.0", "libvirt0"]
+dpkg_dependency=["libunwind8", "libgflags2v5", "libgoogle-perftools4", "traceroute", "python-mako", "python-simplejson", "python-unittest2", "python-yaml", "python-netaddr", "libboost-filesystem1.58.0", "libboost-chrono1.58.0", "libgoogle-glog0v5", "dkms", "libboost-date-time1.58.0", "python-protobuf", "python-gevent", "libsnappy1v5", "libleveldb1v5", "libboost-program-options1.58.0", "libboost-thread1.58.0", "libboost-iostreams1.58.0", "libvirt0", "python-openssl"]
 
 # host group for servers
 [servers_static]
