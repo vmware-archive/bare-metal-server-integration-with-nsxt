@@ -32,7 +32,10 @@ if [ -z "$connected" ]; then
 fi
 echo "MP connection is ok after migration"
 
-
 echo "migrate successfully"
+
+echo "config static route:"
+bash /opt/vmware/nsx-bm/route.sh
+
 exit 0
 

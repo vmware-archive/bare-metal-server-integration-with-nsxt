@@ -52,6 +52,13 @@
         owner: root
         group: root
         mode: 0755
+    - name: create route script
+      template:
+        src: route/route.j2
+        dest: /opt/vmware/nsx-bm/route.sh
+        owner: root
+        group: root
+        mode: 0755
     - name: create migrate script part 1
       template:
         src: templates/bms_migrate.j2

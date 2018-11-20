@@ -114,7 +114,7 @@ start() {
     else
         dhclient -nw {{ app_intf_name }}
     fi
-
+    bash /opt/vmware/nsx-bm/route.sh
 }
 
 case "${1}" in
