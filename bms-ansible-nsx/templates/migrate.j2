@@ -60,8 +60,8 @@ isUbuntu() {
 
 GetDefaultRoute() {
     output=($(route -n | grep "^0.0.0.0" | awk {'print $8, $2'}))
-    defaultGatewayIp="${output[0]}"
-    defaultGatewayDev="${output[1]}"
+    defaultGatewayDev="${output[0]}"
+    defaultGatewayIp="${output[1]}"
     nsx_bm_log "defaultGatewayIp: $defaultGatewayIp"
     nsx_bm_log "defaultGatewayDev: $defaultGatewayDev"
 }
