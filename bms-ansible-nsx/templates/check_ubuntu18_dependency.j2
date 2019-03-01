@@ -8,7 +8,8 @@ dependency=/opt/baremetal/miss-dependency
 rm -rf $dependency
 touch $dependency
 
-{% for item in dpkg_dependency %}
+
+{% for item in ubuntu18_dependency %}
     echo {{ item }}
     output=$(dpkg -l |awk '/[a-z]i/{print $2}'|grep {{ item }})
     if [ ! -z "$output" ]; then
@@ -18,4 +19,3 @@ touch $dependency
         echo {{ item }} >> $dependency
     fi
 {% endfor %}
-

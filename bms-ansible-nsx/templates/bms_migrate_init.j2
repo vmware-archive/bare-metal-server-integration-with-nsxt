@@ -38,6 +38,18 @@ nsx_bm_log() {
     logger -p daemon.info -t NSX-BMS "${1}"
 }
 
+get_os_type() {
+    host_os=$(lsb_release -si)
+    nsx_log "host_os: $host_os"
+}
+
+isSUSE() {
+    if [ "$host_os" == "SUSE" ]; then
+        return 0
+    fi
+    return 1
+}
+
 parse_bms_config() {
     if [ ! -f $BMS_CONFIG_FILE ]; then
         nsx_bm_log "ERROR: BMS config file not found"
@@ -112,7 +124,11 @@ start() {
             route add default gw $defaultGatewayIp
         fi
     else
-        dhclient -nw {{ app_intf_name }}
+        if isSUSE; then
+            ifup {{ app_intf_name }}
+        else
+            dhclient -nw {{ app_intf_name }}
+        fi
     fi
     bash /opt/vmware/nsx-bm/route.sh
 }

@@ -8,9 +8,10 @@ dependency=/opt/baremetal/miss-dependency
 rm -rf $dependency
 touch $dependency
 
-{% for item in rpm_dependency %}
+
+{% for item in ubuntu16_dependency %}
     echo {{ item }}
-    output=$(rpm -qa |grep {{ item }})
+    output=$(dpkg -l |awk '/[a-z]i/{print $2}'|grep {{ item }})
     if [ ! -z "$output" ]; then
         echo "installed"
     else
@@ -18,4 +19,3 @@ touch $dependency
         echo {{ item }} >> $dependency
     fi
 {% endfor %}
-

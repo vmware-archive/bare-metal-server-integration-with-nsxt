@@ -31,10 +31,19 @@ get_os_type() {
         nsx_bm_log "RHEL OS"
     elif isUbuntu; then
         nsx_bm_log "UBUNTU OS"
+    elif isSUSE; then
+        nsx_bm_log "SUSE OS"
     else
         nsx_bm_log "unkown OS, abort"
         exit 1
     fi
+}
+
+isSUSE() {
+    if [ "$host_os" == "SUSE" ]; then
+        return 0
+    fi
+    return 1
 }
 
 isRhel() {
@@ -60,6 +69,10 @@ restore_ifcfg_file() {
         ifcfg_file="/etc/sysconfig/network-scripts/ifcfg-"$intf_name
     elif isUbuntu; then
         ifcfg_file="/etc/network/interfaces"
+    elif isSUSE; then
+        ifcfg_file="/etc/sysconfig/network/ifcfg-"$intf_name
+        nsx-eth-ifcfg_file="/etc/sysconfig/network/ifcfg-"$NSX_ETH
+        rm $nsx-eth-ifcfg_file
     else
         nsx_bm_log "unkown OS, abort"
         exit 1
@@ -114,6 +127,7 @@ if [ "$config_mode" != "migrate" ]; then
     exit
 fi
 
+ifdown $NSX_ETH
 ovs-vsctl del-port $NSX_ETH_PEER
 
 restore_ifcfg_file $migrate_interface

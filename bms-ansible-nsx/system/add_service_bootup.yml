@@ -8,4 +8,5 @@
 - name: add bootup script for RHEL/CentOS
   command: chkconfig --add nsx-baremetal
   when: (os_type.stdout == "RedHatEnterpriseServer") or
-        (os_type.stdout == "CentOS")
+        (os_type.stdout == "CentOS") or
+        (os_type.stdout == "SUSE")

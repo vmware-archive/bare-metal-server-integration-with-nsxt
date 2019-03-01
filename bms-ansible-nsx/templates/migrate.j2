@@ -18,7 +18,8 @@ NSX_ETH_PEER=$NSX_ETH"-peer"
 # ConfigMode: "dhcp" "static" "migrate"
 ConfigMode="migrate"
 BridgeIntfPrefix="~"
-MigrateBridgeIntfName=$BridgeIntfPrefix$MigratePnicName
+SUSEBridgeIntfPrefix="nsx_"
+MigrateBridgeIntfName=
 isStatic=true
 isIpConfigured=false
 interfaceStatus=
@@ -58,6 +59,21 @@ isUbuntu() {
     return 1
 }
 
+isSUSE() {
+    if [ "$host_os" == "SUSE" ]; then
+        return 0
+    fi
+    return 1
+}
+
+get_migrate_bridge_intf_name() {
+    if isSUSE; then
+        MigrateBridgeIntfName=$SUSEBridgeIntfPrefix$MigratePnicName
+    else
+        MigrateBridgeIntfName=$BridgeIntfPrefix$MigratePnicName
+    fi
+}
+
 GetDefaultRoute() {
     output=($(route -n | grep "^0.0.0.0" | awk {'print $8, $2'}))
     defaultGatewayDev="${output[0]}"
@@ -95,7 +111,7 @@ get_interface_status() {
 
 
 get_nic_ip_config_spec() {
-    if isRhel; then
+    if isRhel || isSUSE; then
         get_rhel_nic_ip_config_spec $1
     elif isUbuntu; then
         get_ubuntu_nic_ip_config_spec $1
@@ -119,7 +135,11 @@ get_nic_ip_config_spec() {
 
 get_rhel_nic_ip_config_spec() {
     local intf_name=$1
-    local configFile="/etc/sysconfig/network-scripts/ifcfg-"$1
+    if isRhel; then
+        local configFile="/etc/sysconfig/network-scripts/ifcfg-"$1
+    elif isSUSE; then
+        local configFile="/etc/sysconfig/network/ifcfg-"$1
+    fi
 
     nsx_bm_log "configFile: $configFile"
 
@@ -129,7 +149,7 @@ get_rhel_nic_ip_config_spec() {
         key="${output[0]}"
         value="${output[1]}"
         if [ "$key" == "BOOTPROTO" ]; then
-            if [ "$value" == "dhcp" ] || [ "$value" == "\"dhcp\"" ]; then
+            if [ "$value" == "dhcp" ] || [ "$value" == "\"dhcp\"" ] || [ "$value" == "'dhcp'" ]; then
                 isStatic=false
             fi
         elif [ "$key" == "IPADDR" ]; then
@@ -228,13 +248,31 @@ IFUP_L2_ONLY() {
    ifconfig $1 0.0.0.0 up 2>&1
 }
 
+start_app_intf_forSUSE() {
+    nsx_bm_log "start_app_intf_forSUSE"
+    local old="/etc/sysconfig/network/ifcfg-"$MigrateBridgeIntfName
+    local new="/etc/sysconfig/network/ifcfg-"$1
+    cp $old $new
+    sed -i "/DEVICE/s/^/$BMS_CMT_PREFIX/" $new
+    sed -i "/NAME/s/^/$BMS_CMT_PREFIX/" $new
+    ifdown $1
+    ifup $1
+}
+
+
 # IN: $1=<if_name> (e.g. eth1)
 start_app_intf() {
     nsx_bm_log "start app interface"
     ip link set $NSX_ETH up
-    if [ "$isStatic" = false ]; then
-        nsx_bm_log "start app interface dhcp"
-        dhclient -nw $1
+
+    if isSUSE; then
+        start_app_intf_forSUSE $1
+        return
+    else
+        if [ "$isStatic" = false ]; then
+            nsx_bm_log "start app interface dhcp"
+            dhclient -nw $1
+        fi
     fi
 }
 
@@ -244,7 +282,7 @@ stop_app_intf_dhcp() {
 }
 
 update_ifcfg_file() {
-    if isRhel; then
+    if isRhel || isSUSE; then
         update_rhel_ifcfg_file $1
     fi
     if isUbuntu; then
@@ -282,7 +320,11 @@ update_ubuntu_ifcfg_file() {
 
 update_rhel_ifcfg_file() {
     local intf_name=$1
-    local configFile="/etc/sysconfig/network-scripts/ifcfg-"$1
+    if isRhel; then
+        local configFile="/etc/sysconfig/network-scripts/ifcfg-"$1
+    elif isSUSE; then
+        local configFile="/etc/sysconfig/network/ifcfg-"$1
+    fi
 
 
     if [ "$isStatic" = true ]; then
@@ -293,13 +335,6 @@ update_rhel_ifcfg_file() {
         sed -i "/BOOTPROTO/s/^/$BMS_CMT_PREFIX/" $configFile
     fi
 }
-
-restore_rhel_ifcfg_file() {
-    local intf_name=$1
-    local configFile="/etc/sysconfig/network-scripts/ifcfg-"$1
-    sed -i "s/^$BMS_CMT_PREFIX//g" $configFile
-}
-
 
 pre_migrate_to_app() {
     local intf_name=$1
@@ -338,6 +373,7 @@ create_app_intf() {
     ip link set $NSX_ETH_PEER up
 
     if [ "$isStatic" = true ]; then
+        nsx_bm_log "config ipaddress"
         if [ ! -z "$ip_address" ]; then
             if [ ! -z "$netmask" ]; then
                 ifconfig $NSX_ETH $ip_address netmask $netmask
@@ -393,6 +429,7 @@ migrate_ip_to_app() {
     nsx_bm_log "migrage bridge ip to app"
     get_os_type
 
+    get_migrate_bridge_intf_name
     nsx_bm_log "migrate bridge interface name $MigrateBridgeIntfName"
 
     get_interface_status $MigrateBridgeIntfName

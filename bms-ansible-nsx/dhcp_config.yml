@@ -34,8 +34,20 @@
         owner: root
         group: root
         mode: 0755
+    - name: create suse dhcp network configure file
+      copy:
+        src: templates/suse_dhcp_network_template.j2
+        dest: /etc/sysconfig/network/ifcfg-{{ app_intf_name }}
+        owner: root
+        group: root
+        mode: 0644
+      when: os_type.stdout == "SUSE"
+    - name: ifup application interface
+      command: ifup {{ app_intf_name }}
+      when: os_type.stdout == "SUSE"
     - name: config DHCP on App NIC
       command: dhclient -nw {{ app_intf_name }}
+      when: os_type.stdout != "SUSE"
     - import_tasks: config/config.yml
     - name: create bootup script
       template:

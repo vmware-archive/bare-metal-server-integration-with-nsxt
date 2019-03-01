@@ -22,6 +22,11 @@
   file:
     path: /etc/init.d/nsx-baremetal
     state: absent
+- name: delete suse network configure file
+  file:
+    path: /etc/sysconfig/network/ifcfg-{{ app_intf_name }}
+    state: absent
+  when: os_type.stdout == "SUSE"
 - name: delete bms config
   block:
     - name: remove bms config

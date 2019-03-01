@@ -1,0 +1,34 @@
+---
+- hosts: 127.0.0.1
+  tasks:
+    - name: get all lsp
+      uri:
+        url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports
+        method: GET
+        user: "{{ hostvars.nsxmanager.username }}"
+        password: "{{ hostvars.nsxmanager.password }}"
+        headers:
+          Content-Type: "application/json"
+        return_contents: yes
+        force_basic_auth: yes
+        validate_certs: no
+        status_code: 200
+        body_format: json
+      register: lsp_response
+    - name: get lsp list
+      set_fact: apply_to="{{ apply_to|default([]) + [ item.id ] }}"
+      with_items: "{{ lsp_response.json.results }}"
+      when: item.id not in "{{ hostvars.quarantine.lsp }}"
+    - name: print apply_to
+      debug: var=apply_to
+    - set_fact: vif_trust_list=[]
+    - include_tasks: lsp/collect_trust_vifid.yml
+      with_items: "{{ apply_to }}"
+    - set_fact: vif_untrust_list=[]
+    - include_tasks: lsp/collect_untrust_vifid.yml
+      with_items: "{{ hostvars.quarantine.lsp }}"
+    - import_tasks: policy/create_domain.yml
+    - import_tasks: policy/create_trustvif_group.yml
+    - import_tasks: policy/create_untrustvif_group.yml
+    - import_tasks: policy/create_communication_map.yml
+

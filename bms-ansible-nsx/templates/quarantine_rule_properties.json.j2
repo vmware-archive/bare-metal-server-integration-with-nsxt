@@ -1,0 +1,52 @@
+{
+   "display_name": "baremetal-quarantine-section",
+   "section_type": "LAYER3",
+   "stateful": true,
+   "applied_tos": [
+{% for item in apply_to %}
+      {
+         "target_type": "LogicalPort",
+         "target_id": "{{ item }}"
+      },
+{% endfor %}
+   ],
+   "rules": [
+      {
+         "display_name":"quarantine-rule",
+         "destinations_excluded": false,
+         "action":"DROP",
+         "direction":"IN_OUT",
+         "sources": [
+{% for item in hostvars.quarantine.lsp %}
+            {
+               "target_type": "LogicalPort",
+               "target_id": "{{ item }}",
+               "is_valid": true
+            },
+{% endfor %}
+         ]
+      },
+      {
+        "display_name":"quarantine-rule-1",
+        "destinations_excluded": false,
+        "action":"DROP",
+        "direction":"IN_OUT",
+        "destinations": [
+{% for item in hostvars.quarantine.lsp %}
+            {
+               "target_type": "LogicalPort",
+               "target_id": "{{ item }}",
+               "is_valid": true
+            },
+
+{% endfor %}
+         ]
+      }
+   ],
+   "tags": [
+     {
+       "scope": "bare-metal",
+       "tag": "quarantine"
+     }
+   ]
+}

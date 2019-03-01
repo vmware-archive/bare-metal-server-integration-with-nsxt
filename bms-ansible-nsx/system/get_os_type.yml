@@ -10,4 +10,5 @@
   when: (os_type.stdout == "") or
         ((os_type.stdout != "Ubuntu") and
         (os_type.stdout != "RedHatEnterpriseServer") and
-        (os_type.stdout != "CentOS"))
+        (os_type.stdout != "CentOS") and
+        (os_type.stdout != "SUSE"))

@@ -1,0 +1,54 @@
+---
+- hosts: 127.0.0.1
+  tasks:
+    - name: get quarantine section
+      uri:
+        url: https://{{ hostvars.nsxmanager.ip }}/api/v1/search?query=resource_type:Firewallsection%20AND%20tags.scope:bare-metal%20AND%20tags.tag:quarantine
+        method: GET
+        user: "{{ hostvars.nsxmanager.username }}"
+        password: "{{ hostvars.nsxmanager.password }}"
+        headers:
+          Content-Type: "application/json"
+        return_contents: yes
+        force_basic_auth: yes
+        validate_certs: no
+        status_code: 200
+        body_format: json
+      register: section_response
+    - name: get section id
+      set_fact: section_id="{{ item.id }}"
+      with_items: "{{section_response.json.results}}"
+    - name: check section id
+      fail: msg="quarantine section id not found"
+      when: section_id is not defined
+    - name: get rule id
+      uri:
+        url: https://{{ hostvars.nsxmanager.ip }}/api/v1/firewall/sections/{{ section_id }}/rules
+        method: GET
+        user: "{{ hostvars.nsxmanager.username }}"
+        password: "{{ hostvars.nsxmanager.password }}"
+        return_contents: yes
+        force_basic_auth: yes
+        validate_certs: no
+        status_code: 200
+        body_format: json
+      register: rules_response
+    - name: get rule id
+      set_fact: rule_ids="{{ rule_ids|default([]) + [ item.id ] }}"
+      with_items: "{{rules_response.json.results}}"
+    - name: check rule id
+      fail: msg="rule id not found"
+      when: rule_ids is not defined
+    - debug: var=rule_ids
+    - include_tasks: policy/delete_rule.yml
+      with_items: "{{ rule_ids }}"
+    - name: delete quarantine section
+      uri:
+        url: https://{{ hostvars.nsxmanager.ip }}/api/v1/firewall/sections/{{ section_id }}
+        method: DELETE
+        user: "{{ hostvars.nsxmanager.username }}"
+        password: "{{ hostvars.nsxmanager.password }}"
+        return_contents: yes
+        force_basic_auth: yes
+        validate_certs: no
+        status_code: 200
