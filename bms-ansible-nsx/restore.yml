@@ -5,6 +5,7 @@
 ---
 - hosts: servers_restoration
   tasks:
+    - import_tasks: auth/manager_thumbprint_validate.yml
     - name: Get Config Mode
       command: bash -c "cat /etc/vmware/nsx-bm/bms.conf |grep config_mode"
       register: ConfigMode

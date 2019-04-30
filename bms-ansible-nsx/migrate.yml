@@ -10,6 +10,7 @@
       set_fact:
         underlay_mode: 'true'
         FQDN: false
+    - import_tasks: auth/manager_thumbprint_validate.yml
     - import_tasks: system/get_os_type.yml
     - import_tasks: config/tn_uuid.yml
     - import_tasks: config/fqdn.yml

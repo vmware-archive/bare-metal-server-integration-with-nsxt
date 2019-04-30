@@ -30,14 +30,14 @@ server1 ansible_ssh_host= static_ip= netmask= ls_name=
 [servers_dhcp]
 
 [servers_migration]
-server6 ansible_ssh_host= migrate_intf= ls_name=
+#server6 ansible_ssh_host= migrate_intf= ls_name=
 
 [servers_restoration]
-server6
+#server6
 
 # NSX Configuration
 [NSX]
 #============================
 # NSX Manager Credential
-nsxmanager ip= username= password=
+nsxmanager ip=10.161.75.114 username= password= thumbprint=
 #============================
