@@ -39,5 +39,5 @@ server1 ansible_ssh_host= static_ip= netmask= ls_name=
 [NSX]
 #============================
 # NSX Manager Credential
-nsxmanager ip=10.161.75.114 username= password= thumbprint=
+nsxmanager ip= username= password= thumbprint=
 #============================
