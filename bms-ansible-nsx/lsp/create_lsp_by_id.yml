@@ -6,6 +6,7 @@
   fail: msg="ls_id or vif_id not defined"
   when: (ls_id is not defined) or (vif_id is not defined)
 - name: create Logical Switch Port
+  delegate_to: localhost
   uri:
     url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports
     method: POST

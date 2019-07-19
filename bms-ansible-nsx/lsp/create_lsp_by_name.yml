@@ -3,6 +3,7 @@
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
 - name: get logical switch
+  delegate_to: localhost
   uri:
     url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-switches
     method: GET

@@ -18,6 +18,7 @@
     mode: 0755
 - name: Run restore script
   shell: /tmp/bms_restore.sh >> /var/log/restore.log 2>&1
+- import_tasks: lsp/get_lsp_id.yml
 - import_tasks: lsp/delete_lsp.yml
 - import_tasks: system/del_service_bootup.yml
 - name: delete config file
