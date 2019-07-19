@@ -1,0 +1,15 @@
+################################################################################
+### Copyright (C) 2019 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: save lsp id
+  block:
+    - name: create directory
+      file:
+        path: /etc/vmware/nsx-bm
+        state: directory
+        mode: 0755
+    - name: generate logical switch port config
+      copy:
+        content: "{{ lp_response.json.id }}"
+        dest: /etc/vmware/nsx-bm/lpid

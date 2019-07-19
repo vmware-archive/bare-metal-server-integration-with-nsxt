@@ -1,5 +1,5 @@
 ################################################################################
-### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### Copyright (C) 2019 VMware, Inc.  All rights reserved.
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
 - name: check ls id and vif id
@@ -23,14 +23,3 @@
 - name: check logical switch port id
   fail: msg="logical switch port id not found"
   when: lp_response.json.id == ""
-- name: save lsp id
-  block:
-    - name: create directory
-      file:
-        path: /etc/vmware/nsx-bm
-        state: directory
-        mode: 0755
-    - name: generate logical switch port config
-      copy:
-        content: "{{ lp_response.json.id }}"
-        dest: /etc/vmware/nsx-bm/lpid
