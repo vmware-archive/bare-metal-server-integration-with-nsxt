@@ -1,0 +1,13 @@
+################################################################################
+### Copyright (C) 2019 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: Get Install Dir
+  win_reg_stat:
+    path: HKLM:\SOFTWARE\VMware, Inc.\NSX
+    name: InstallDir
+  register: InstallDir
+- name: Check Install Dir
+  fail: msg="unknown install dir"
+  when: (InstallDir.value == "")
+- debug: msg="{{InstallDir.value}}"

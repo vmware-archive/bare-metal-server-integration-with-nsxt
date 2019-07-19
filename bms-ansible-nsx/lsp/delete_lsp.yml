@@ -3,8 +3,9 @@
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
 - name: Delete Logical Switch Port
+  delegate_to: localhost
   uri:
-    url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports/{{ lspid.stdout }}?detach=true
+    url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports/{{ lspid.stdout | trim }}?detach=true
     method: DELETE
     user: "{{ hostvars.nsxmanager.username }}"
     password: "{{ hostvars.nsxmanager.password }}"
