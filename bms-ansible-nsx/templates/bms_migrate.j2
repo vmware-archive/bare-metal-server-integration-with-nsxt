@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 # Check MP CONNECTION
-connected=$(netstat -an |grep 5671 |grep ESTABLISHED)
+connected=$(netstat -an |grep 1234 |grep ESTABLISHED)
 if [ -z "$connected" ]; then
     echo "Cannot connect to MP, pls. check MP connection"
     exit 1
@@ -22,7 +22,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # After migrate, Check MP CONNECTION again
-connected=$(netstat -an |grep 5671 |grep ESTABLISHED)
+connected=$(netstat -an |grep 1234 |grep ESTABLISHED)
 if [ -z "$connected" ]; then
     echo "Cannot connect to MP, log debug info"
     bash /opt/vmware/nsx-bm/debug.sh
