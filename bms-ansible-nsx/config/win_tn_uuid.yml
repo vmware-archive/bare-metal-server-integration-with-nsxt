@@ -3,7 +3,7 @@
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
 - name: get transport node uuid
-  win_command: powershell.exe [xml]$cn = Get-Content {{InstallDir.value}}\controller-info.xml; $cn.config.transportNode.UUID
+  win_command: powershell.exe [xml]$cn = Get-Content '{{InstallDir.value}}\controller-info.xml'; $cn.config.transportNode.UUID
   register: tn_uuid
 - name:
   fail: msg="invalid transport node uuid"
