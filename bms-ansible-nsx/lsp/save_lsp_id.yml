@@ -11,5 +11,5 @@
         mode: 0755
     - name: generate logical switch port config
       copy:
-        content: "{{ lp_response.json.id }}"
+        content: "{{ lp_id }}"
         dest: /etc/vmware/nsx-bm/lpid

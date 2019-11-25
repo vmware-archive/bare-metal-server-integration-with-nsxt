@@ -15,7 +15,7 @@
     headers:
       Content-Type: "application/json"
     body: "{{ lookup('template', 'create_lsp.json.j2') }}"
-    return_contents: yes
+    return_content: yes
     force_basic_auth: yes
     validate_certs: no
     status_code: 201
@@ -24,3 +24,6 @@
 - name: check logical switch port id
   fail: msg="logical switch port id not found"
   when: lp_response.json.id == ""
+- name: get lp id
+  set_fact:
+    lp_id: "{{ lp_response.json.id }}"

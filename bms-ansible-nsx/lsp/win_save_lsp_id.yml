@@ -11,4 +11,4 @@
     - name:  Set the contents of a file
       win_copy:
         dest: "{{ InstallDir.value }}\\lsp_id.txt"
-        content: "{{ lp_response.json.id }}"
+        content: "{{ lp_id }}"

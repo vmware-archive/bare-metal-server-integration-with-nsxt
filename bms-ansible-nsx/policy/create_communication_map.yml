@@ -11,7 +11,7 @@
     headers:
       Content-Type: "application/json"
     body: "{{ lookup('template', 'create_communication_map.json.j2') }}"
-    return_contents: yes
+    return_content: yes
     force_basic_auth: yes
     validate_certs: no
     status_code: 200
