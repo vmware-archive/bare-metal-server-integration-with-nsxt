@@ -9,7 +9,7 @@
         password: "{{ hostvars.nsxmanager.password }}"
         headers:
           Content-Type: "application/json"
-        return_contents: yes
+        return_content: yes
         force_basic_auth: yes
         validate_certs: no
         status_code: 200
@@ -27,7 +27,7 @@
         method: GET
         user: "{{ hostvars.nsxmanager.username }}"
         password: "{{ hostvars.nsxmanager.password }}"
-        return_contents: yes
+        return_content: yes
         force_basic_auth: yes
         validate_certs: no
         status_code: 200

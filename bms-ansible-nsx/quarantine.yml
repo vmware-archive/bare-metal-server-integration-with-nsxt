@@ -9,7 +9,7 @@
         password: "{{ hostvars.nsxmanager.password }}"
         headers:
           Content-Type: "application/json"
-        return_contents: yes
+        return_content: yes
         force_basic_auth: yes
         validate_certs: no
         status_code: 200
@@ -30,7 +30,7 @@
         headers:
           Content-Type: "application/json"
         body: "{{ lookup('template', 'quarantine_rule_properties.json.j2') }}"
-        return_contents: yes
+        return_content: yes
         force_basic_auth: yes
         validate_certs: no
         status_code: 201
