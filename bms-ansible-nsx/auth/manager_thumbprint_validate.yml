@@ -1,0 +1,10 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: Validate Manager Thumbprint
+  command: python auth/thumbprint_validate.py {{ hostvars.nsxmanager.ip }} 443 {{ hostvars.nsxmanager.thumbprint }}
+  when: hostvars.nsxmanager.thumbprint is defined
+  delegate_to: 127.0.0.1
+  register: thumbprint_checking_result
+  failed_when: thumbprint_checking_result.rc != 0

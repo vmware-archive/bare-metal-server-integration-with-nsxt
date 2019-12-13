@@ -10,9 +10,11 @@
       set_fact:
         underlay_mode: 'true'
         FQDN: false
+    - import_tasks: auth/manager_thumbprint_validate.yml
     - import_tasks: system/get_os_type.yml
     - import_tasks: config/tn_uuid.yml
     - import_tasks: config/fqdn.yml
+    - import_tasks: lsp/check_legacy_lsp.yml
     - import_tasks: lsp/vif_id.yml
     - import_tasks: validation/vlan_0_ls_check.yml
     - import_tasks: vif/int_br_name.yml
@@ -20,6 +22,7 @@
     - import_tasks: validation/migration_input_check.yml
     - import_tasks: config/app_intf_name.yml
     - import_tasks: lsp/create_lsp.yml
+    - import_tasks: lsp/save_lsp_id.yml
     - import_tasks: config/bms_config.yml
       when: not FQDN
     - name: generate config file

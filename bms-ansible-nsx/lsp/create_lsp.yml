@@ -2,13 +2,6 @@
 ### Copyright (C) 2018 VMware, Inc.  All rights reserved.
 ### SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
 ################################################################################
-- name: get logical switch port id
-  stat:
-    path: /etc/vmware/nsx-bm/lpid
-  register: stat_result
-- name: check legacy logical port id
-  debug: msg="legacy lspid found, pls. remove it"
-  when: stat_result.stat.exists == True
 - name: check ls id or ls name
   fail: msg="ls_id or ls_name not defined"
   when: (ls_id is not defined) and (ls_name is not defined)

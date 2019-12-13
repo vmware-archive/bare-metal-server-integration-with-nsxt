@@ -1,0 +1,36 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+
+# Create an group that contains the Bare Metal Servers
+[windows:children]
+servers_static
+servers_dhcp
+servers_migration
+
+# Set variables common for all Bare Metal Servers
+[windows:vars]
+ansible_user=
+ansible_password=
+ansible_connection=
+ansible_winrm_server_cert_validation=ignore
+
+
+# host group for servers
+[servers_static]
+10.117.5.191 static_ip= netmask= ls_name=
+
+[servers_dhcp]
+
+[servers_migration]
+
+[servers_restoration]
+
+
+# NSX Configuration
+[NSX]
+#============================
+# NSX Manager Credential
+nsxmanager ip= username= password=
+#============================

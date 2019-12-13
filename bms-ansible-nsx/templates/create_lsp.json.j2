@@ -1,5 +1,5 @@
 {
-  "display_name": "{{ ansible_hostname }}/{{ app_intf_name }}@{{ tn_uuid.stdout }}",
+  "display_name": "{{ ansible_hostname }}/{{ app_intf_name }}@{{ tn_uuid.stdout | trim }}",
   "logical_switch_id": "{{ ls_id }}",
   "attachment": {
     "attachment_type": "VIF",
@@ -8,7 +8,7 @@
       "resource_type": "VifAttachmentContext",
       "allocate_addresses": "None",
       "vif_type": "INDEPENDENT",
-      "transport_node_uuid": "{{ tn_uuid.stdout }}"
+      "transport_node_uuid": "{{ tn_uuid.stdout | trim }}"
     }
   },
   "address_bindings": [],

@@ -6,6 +6,7 @@
   fail: msg="ls_id or vif_id not defined"
   when: (ls_id is not defined) or (vif_id is not defined)
 - name: create Logical Switch Port
+  delegate_to: localhost
   uri:
     url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports
     method: POST
@@ -14,7 +15,7 @@
     headers:
       Content-Type: "application/json"
     body: "{{ lookup('template', 'create_lsp.json.j2') }}"
-    return_contents: yes
+    return_content: yes
     force_basic_auth: yes
     validate_certs: no
     status_code: 201
@@ -23,14 +24,6 @@
 - name: check logical switch port id
   fail: msg="logical switch port id not found"
   when: lp_response.json.id == ""
-- name: save lsp id
-  block:
-    - name: create directory
-      file:
-        path: /etc/vmware/nsx-bm
-        state: directory
-        mode: 0755
-    - name: generate logical switch port config
-      copy:
-        content: "{{ lp_response.json.id }}"
-        dest: /etc/vmware/nsx-bm/lpid
+- name: get lp id
+  set_fact:
+    lp_id: "{{ lp_response.json.id }}"

@@ -2,15 +2,10 @@
 ### Copyright (C) 2018 VMware, Inc.  All rights reserved.
 ### SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
 ################################################################################
-- name: Get LP Id
-  command: cat /etc/vmware/nsx-bm/lpid
-  register: lspid
-- name: check logical port id
-  fail: msg="lspid not found"
-  when: lspid.stdout == ""
 - name: Delete Logical Switch Port
+  delegate_to: localhost
   uri:
-    url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports/{{ lspid.stdout }}?detach=true
+    url: https://{{ hostvars.nsxmanager.ip }}/api/v1/logical-ports/{{ lspid.stdout | trim }}?detach=true
     method: DELETE
     user: "{{ hostvars.nsxmanager.username }}"
     password: "{{ hostvars.nsxmanager.password }}"

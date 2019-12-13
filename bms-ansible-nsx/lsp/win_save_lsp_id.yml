@@ -1,0 +1,14 @@
+################################################################################
+### Copyright (C) 2019 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: save lsp id
+  block:
+    - name: create file
+      win_file:
+        path: "{{ InstallDir.value }}\\lsp_id.txt"
+        state: touch
+    - name:  Set the contents of a file
+      win_copy:
+        dest: "{{ InstallDir.value }}\\lsp_id.txt"
+        content: "{{ lp_id }}"

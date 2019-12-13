@@ -12,6 +12,7 @@
 - name: delete veth
   command: bash -c "ip link del {{ app_intf_name }} &> /dev/null"
   ignore_errors: yes
+- import_tasks: lsp/get_lsp_id.yml
 - import_tasks: lsp/delete_lsp.yml
 - import_tasks: system/del_service_bootup.yml
 - name: delete config file

@@ -10,14 +10,17 @@
       set_fact:
         config_mode: 'config_mode=static'
         underlay_mode: 'false'
+    - import_tasks: auth/manager_thumbprint_validate.yml
     - import_tasks: system/get_os_type.yml
     - import_tasks: config/tn_uuid.yml
+    - import_tasks: lsp/check_legacy_lsp.yml
     - import_tasks: lsp/vif_id.yml
     - import_tasks: vif/int_br_name.yml
     - import_tasks: validation/vif_id_check.yml
     - import_tasks: validation/static_input_check.yml
     - import_tasks: config/app_intf_name.yml
     - import_tasks: lsp/create_lsp.yml
+    - import_tasks: lsp/save_lsp_id.yml
     - import_tasks: config/bms_config.yml
     - import_tasks: config/config.yml
     - import_tasks: vif/create_vif.yml
