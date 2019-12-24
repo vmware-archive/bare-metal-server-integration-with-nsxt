@@ -1,5 +1,5 @@
 - name: detach app vif
-  win_shell: "{{ InstallDir.value }}\\win-bms-install.ps1 -operation vif-uninstall"
+  win_shell: "& '{{ InstallDir.value }}\\win-bms-install.ps1' -operation vif-uninstall"
   become: yes
   become_user: Administrator
   register: result

@@ -3,7 +3,7 @@
 ### SPDX-License-Identifier: BSD-2-Clause
 ################################################################################
 - name: Get LP Id
-  win_command:  powershell.exe Get-Content {{InstallDir.value}}\lsp_id.txt
+  win_command:  powershell.exe Get-Content '{{InstallDir.value}}\lsp_id.txt'
   register: lspid
 - name: check logical port id
   fail: msg="lspid not found"
