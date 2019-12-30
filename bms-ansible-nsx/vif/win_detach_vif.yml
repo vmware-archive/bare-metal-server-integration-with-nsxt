@@ -2,4 +2,6 @@
   win_shell: "& '{{ InstallDir.value }}\\win-bms-install.ps1' -operation vif-uninstall"
   become: yes
   become_user: Administrator
+  async: 60
+  poll: 10
   register: result
