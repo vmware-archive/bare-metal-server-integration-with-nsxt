@@ -22,10 +22,13 @@ ansible_winrm_server_cert_validation=ignore
 10.117.5.191 static_ip= netmask= ls_name=
 
 [servers_dhcp]
+#10.117.5.191 ls_name=
 
 [servers_migration]
+#10.117.5.191 migrate_intf= ls_name=
 
 [servers_restoration]
+#10.117.5.191
 
 
 # NSX Configuration

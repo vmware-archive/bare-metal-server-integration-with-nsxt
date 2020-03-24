@@ -28,6 +28,7 @@ suse12_dependency=["net-tools", "tcpdump", "python-simplejson", "python-netaddr"
 server1 ansible_ssh_host= static_ip= netmask= ls_name=
 
 [servers_dhcp]
+#server6 ansible_ssh_host= ls_name=
 
 [servers_migration]
 #server6 ansible_ssh_host= migrate_intf= ls_name=
