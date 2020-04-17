@@ -8,6 +8,7 @@ Require Ansbile Playbook version equal or greater than 2.5.0 (for Windows) or 2.
 
 ## Releases & Major Branches
 The playbooks in master branch are used for development.
+
 Branch release-3.0.0 is compatible with NSX-T 3.0.0
 
 Branch release-2.5.0 is compatible with NSX-T 2.5.0
