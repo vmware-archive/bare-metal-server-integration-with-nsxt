@@ -67,6 +67,7 @@ restore_ifcfg_file() {
     local intf_name=$1
     if isRhel; then
         ifcfg_file="/etc/sysconfig/network-scripts/ifcfg-"$intf_name
+        rm -f /etc/sysconfig/network-scripts/ifcfg-$NSX_ETH
     elif isUbuntu; then
         ifcfg_file="/etc/network/interfaces"
     elif isSUSE; then
@@ -80,6 +81,9 @@ restore_ifcfg_file() {
 
     nsx_bm_log "ifcfg_file: $ifcfg_file"
 
+    if isUbuntu; then
+        sed -i "/$NSX_ETH/d" $ifcfg_file
+    fi
     sed -i "s/^$BMS_CMT_PREFIX//g" $ifcfg_file
 }
 
