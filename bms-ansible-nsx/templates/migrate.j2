@@ -298,22 +298,26 @@ update_ubuntu_ifcfg_file() {
         sed -i "/iface $intf_name inet dhcp/s/^/$BMS_CMT_PREFIX/" $IFCFG_FILE_UBUNTU
     else
         nsx_bm_log "update static config"
+        line=$(sed -n "/auto $intf_name/=" $IFCFG_FILE_UBUNTU)
+        sed -i "$line aauto $NSX_ETH" $IFCFG_FILE_UBUNTU
         sed -i "/auto $intf_name/s/^/$BMS_CMT_PREFIX/" $IFCFG_FILE_UBUNTU
 
+        #line=$(sed -n "/iface $intf_name inet static/=" $IFCFG_FILE_UBUNTU)
+
+        #total_linenum=$(cat $IFCFG_FILE_UBUNTU |wc -l)
+        #(( line++ ))
+        #while [ $line -le $total_linenum ]
+        #do
+        #    key=$(sed -n "$line"p $IFCFG_FILE_UBUNTU | awk {'print $1'})
+        #    if [ "$key" == "auto" ] || [ "$key" == "iface" ]; then
+        #        break
+        #    fi
+        #    sed -i "$line{s/^/$BMS_CMT_PREFIX/}" $IFCFG_FILE_UBUNTU
+        #    (( line++ ))
+        #done
+
         line=$(sed -n "/iface $intf_name inet static/=" $IFCFG_FILE_UBUNTU)
-
-        total_linenum=$(cat $IFCFG_FILE_UBUNTU |wc -l)
-        (( line++ ))
-        while [ $line -le $total_linenum ]
-        do
-            key=$(sed -n "$line"p $IFCFG_FILE_UBUNTU | awk {'print $1'})
-            if [ "$key" == "auto" ] || [ "$key" == "iface" ]; then
-                break
-            fi
-            sed -i "$line{s/^/$BMS_CMT_PREFIX/}" $IFCFG_FILE_UBUNTU
-            (( line++ ))
-        done
-
+        sed -i "$line aiface $NSX_ETH inet static" $IFCFG_FILE_UBUNTU
         sed -i "/iface $intf_name inet static/s/^/$BMS_CMT_PREFIX/" $IFCFG_FILE_UBUNTU
     fi
 }
@@ -331,6 +335,13 @@ update_rhel_ifcfg_file() {
         sed -i "/IPADDR/s/^/$BMS_CMT_PREFIX/" $configFile
         sed -i "/NETMASK/s/^/$BMS_CMT_PREFIX/" $configFile
         sed -i "/GATEWAY/s/^/$BMS_CMT_PREFIX/" $configFile
+        if isRhel; then
+            cp /etc/sysconfig/network-scripts/ifcfg-$MigrateBridgeIntfName /etc/sysconfig/network-scripts/ifcfg-$NSX_ETH
+            sed -i "s/^$BMS_CMT_PREFIX//g" /etc/sysconfig/network-scripts/ifcfg-$NSX_ETH
+            sed -i "s/$MigrateBridgeIntfName/$NSX_ETH/" /etc/sysconfig/network-scripts/ifcfg-$NSX_ETH
+            sed -i "/OVS/"d /etc/sysconfig/network-scripts/ifcfg-$NSX_ETH
+            sed -i "/ovs/"d /etc/sysconfig/network-scripts/ifcfg-$NSX_ETH
+        fi
     else
         sed -i "/BOOTPROTO/s/^/$BMS_CMT_PREFIX/" $configFile
     fi
