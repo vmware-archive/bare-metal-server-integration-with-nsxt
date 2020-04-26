@@ -11,5 +11,9 @@
   tasks:
     - import_tasks: windows/get_install_dir.yml
     - import_tasks: vif/win_detach_vif.yml
+    - name: Remove underlay config file
+      win_file:
+        path: "{{ InstallDir.value }}\\nsx-baremetal.xml"
+        state: absent
     - import_tasks: lsp/win_get_lsp_id.yml
     - import_tasks: lsp/delete_lsp.yml

@@ -1,0 +1,25 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+---
+- hosts: servers_migration
+  any_errors_fatal: true
+  become_method: runas
+  vars:
+    ansible_become_password: "{{ ansible_password }}"
+  tasks:
+    - name: Set underlay mode
+      set_fact:
+        underlay_mode: "false"
+      when: underlay_mode is not defined
+    - import_tasks: ../windows/get_install_dir.yml
+    - name: Generate underlay config file
+      win_template:
+        src: ../templates/nsx-baremetal.j2
+        dest: "{{ InstallDir.value }}\\nsx-baremetal.xml"
+        newline_sequence: '\r\n'
+    - name: load underlay config file
+      win_command: ovs-appctl -t "{{ InstallDir.value }}\openvswitch\var\run\openvswitch\nsxa-ctl" bms/underlay-config
+      become: yes
+      become_user: Administrator

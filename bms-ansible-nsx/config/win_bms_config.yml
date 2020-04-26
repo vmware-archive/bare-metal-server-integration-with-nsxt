@@ -1,0 +1,17 @@
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+- name: Set underlay mode
+  set_fact:
+    underlay_mode: "false"
+  when: underlay_mode is not defined
+- name: Generate underlay config file
+  win_template:
+    src: ./templates/nsx-baremetal.j2
+    dest: "{{ InstallDir.value }}\\nsx-baremetal.xml"
+    newline_sequence: '\r\n'
+- name: Restart nsx-agent
+  win_service:
+    name: nsx-agent
+    state: restarted

@@ -12,6 +12,9 @@
     - name: config mode
       set_fact:
         config_mode: 'underlay'
+    - name: config underlay mode
+      set_fact:
+        underlay_mode: 'true'
     - name: set os type
       delegate_to: localhost
       command: echo "Windows"
@@ -23,4 +26,5 @@
     - import_tasks: config/app_intf_name.yml
     - import_tasks: lsp/create_lsp.yml
     - import_tasks: lsp/win_save_lsp_id.yml
+    - import_tasks: config/win_bms_config.yml
     - import_tasks: vif/win_attach_vif.yml
