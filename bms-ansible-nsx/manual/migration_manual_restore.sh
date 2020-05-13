@@ -55,6 +55,9 @@ isRhel() {
     if [ "$host_os" == "CentOS" ]; then
         return 0
     fi
+    if [ "$host_os" == "OracleServer" ]; then
+        return 0
+    fi
     return 1
 }
 
