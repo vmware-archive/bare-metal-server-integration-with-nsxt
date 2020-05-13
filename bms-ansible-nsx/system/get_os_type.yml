@@ -11,4 +11,5 @@
         ((os_type.stdout != "Ubuntu") and
         (os_type.stdout != "RedHatEnterpriseServer") and
         (os_type.stdout != "CentOS") and
+        (os_type.stdout != "OracleServer") and
         (os_type.stdout != "SUSE"))
