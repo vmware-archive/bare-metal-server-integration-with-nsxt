@@ -39,7 +39,7 @@ start() {
     external-ids:iface-id={{ vif_id }} external-ids:iface-status=active
     routing_rules='{{ routing_rules }}'
     if [ "x$routing_rules" != "x" ]; then
-        echo ${routing_rules}|awk '{len=split($0,a,",");for(i=1;i<=len;i++) system("route add "a[i]" dev {{ app_intf_name }}")}'
+        echo ${routing_rules} | awk '{len=split($0,a,",");for(i=1;i<=len;i++) system("route add "a[i]" dev {{ app_intf_name }}")}'
     fi
 }
 

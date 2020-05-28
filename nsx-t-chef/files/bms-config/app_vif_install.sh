@@ -6,7 +6,7 @@
 # usage:
 #       -c [config_mode: static|dhcp|migration|restore] -s [static ips]
 #       -a [app interface name] -m [mac address] -r [routing rules] \
-#       -i [migration interface] -v [vif id] -f [vif id file]
+#       -i [migration interface] -v [vif id]
 #
 set -e
 nsx_bm_log() {
@@ -29,9 +29,9 @@ int_br_name=""
 usage()
 {
     echo "usage: $0"
-    echo "       -c [config_mode: static|dhcp|migration] -s [static ips] -n [net mask] \\"
-    echo "       -a [app interface name] -m [mac address] -g [gateway] -r [routing rules] \\"
-    echo "       -i [migration interface name] -v [vif id]"
+    echo "       -c [config_mode: static|dhcp|migration|restore] -s [static ips] \\"
+    echo "       -a [app interface name] -m [mac address] -r [routing rules] \\"
+    echo "       -i [migration interface] -v [vif id]"
     exit 0
 }
 
@@ -94,7 +94,7 @@ create_vif()
     ip link set ${_app_intf_name}-peer up
     if [ "x$_mac_address" = "x" ]; then
         # get app interface MAC address
-        _mac_address=`ip link show $_app_intf_name |grep ether|awk '{print $2}'`
+        _mac_address=`ip link show $_app_intf_name | grep ether | awk '{print $2}'`
     else
         ip link set dev $_app_intf_name address $_mac_address
     fi
@@ -145,7 +145,7 @@ add_service_bootup()
 config_routing_rules()
 {
     if [ "x$_routing_rules" != "x" ]; then
-        echo ${_routing_rules}|awk '{len=split($0,a,",");for(i=1;i<=len;i++) system("route add "a[i]" dev '$_app_intf_name'")}'
+        echo ${_routing_rules} | awk '{len=split($0,a,",");for(i=1;i<=len;i++) system("route add "a[i]" dev '$_app_intf_name'")}'
     fi
 }
 
@@ -304,7 +304,7 @@ restore_config()
 }
 
 [ $# -eq 0 ] && usage
-while getopts ":c:s:a:m:g:r:i:v:h:" arg; do
+while getopts ":c:s:a:m:r:i:v:h:" arg; do
     case $arg in
         c) # config_mode
             _config_mode=${OPTARG}
