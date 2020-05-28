@@ -1,3 +1,8 @@
+################################################################################
+### Copyright (C) 2020 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
+
 # NSX Manager's ip address
 default['manager']['ip'] = ''
 # NSX Manager's username

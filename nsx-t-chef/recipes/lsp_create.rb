@@ -1,3 +1,7 @@
+################################################################################
+### Copyright (C) 2020 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
 #
 # Cookbook:: nsx-t-chef
 # Recipe:: lsp-create

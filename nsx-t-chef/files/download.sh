@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+################################################################################
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause
+################################################################################
 
 #
 # download.sh lcp-bundle-link
