@@ -1,7 +1,0 @@
-################################################################################
-### Copyright (C) 2018 VMware, Inc.  All rights reserved.
-### SPDX-License-Identifier: BSD-2-Clause
-################################################################################
-- name: check vif id
-  fail: msg="vif id is not defined"
-  when: vif_id is not defined

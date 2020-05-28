@@ -1,8 +1,0 @@
-################################################################################
-### Copyright (C) 2018 VMware, Inc.  All rights reserved.
-### SPDX-License-Identifier: BSD-2-Clause
-################################################################################
-- name: get App interface name
-  set_fact:
-    app_intf_name: "nsx-eth"
-  when: app_intf_name is not defined

@@ -1,7 +1,0 @@
-################################################################################
-### Copyright (C) 2018 VMware, Inc.  All rights reserved.
-### SPDX-License-Identifier: BSD-2-Clause
-################################################################################
-- name: generate vif id
-  set_fact:
-    vif_id: "{{ ansible_date_time.iso8601_micro | to_uuid }}"

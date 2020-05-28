@@ -1,21 +1,13 @@
-
-
-# bare-metal-server-integration-with-nsxt
-This repository contains Ansible playbooks for supporting Bare Metal Server integration with NSX-T.
-Require Ansbile Playbook version equal or greater than 2.5.0 (for Windows) or 2.4.3.0 (for other platforms).
+# nsx-t-chef: Chef Cookbook for Bare Metal Server
+Chef Cookbook for Bare Metal Server Integration with NSX-T
 
 ## Documentation
+nsx-t-chef is Chef Cookbook.
+More details see nsx-t-chef/README.md
 
 ## Releases & Major Branches
-The playbooks in master branch are used for development.
+Branch nsx-t-chef-3.0.2 is compatible with NSX-T 3.0.2
 
-Branch release-3.0.0 is compatible with NSX-T 3.0.0
-
-Branch release-2.5.0 is compatible with NSX-T 2.5.0
-
-Branch release-2.4.0 is compatible with NSX-T 2.4.0
-
-Branch release-2.3.0 is compatible with NSX-T 2.3.0
 
 ## Contributing
 

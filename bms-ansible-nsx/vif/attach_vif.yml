@@ -1,6 +1,0 @@
-################################################################################
-### Copyright (C) 2018 VMware, Inc.  All rights reserved.
-### SPDX-License-Identifier: BSD-2-Clause
-################################################################################
-- name: attach vif to int-br
-  command: bash -c "ovs-vsctl --timeout=5 -- --if-exists del-port {{ app_intf_name }}-peer -- add-port {{ int_br_name.stdout }} {{ app_intf_name }}-peer -- set Interface {{ app_intf_name }}-peer external-ids:attached-mac={{ mac_address }} external-ids:iface-id={{ vif_id }} external-ids:iface-status=active"

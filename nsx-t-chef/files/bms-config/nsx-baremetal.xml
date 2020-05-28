@@ -1,0 +1,7 @@
+<!-- Configuration file for NSX Bare Metal Server -->
+<config>
+    <node_type>bms_node</node_type>
+    <underlay>{{ underlay_mode }}</underlay>
+    <endpointList>
+    </endpointList>
+</config>
