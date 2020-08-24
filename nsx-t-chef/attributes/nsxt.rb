@@ -41,6 +41,9 @@ end
 # Transport Zone ID
 default['nsx']['tn']['transport_zone_id'] = ''
 
+# Host Switch Name
+default['nsx']['tn']['host_switch_name'] = ''
+
 # Uplink Profile ID
 default['nsx']['tn']['uplink_profile_id'] = ''
 

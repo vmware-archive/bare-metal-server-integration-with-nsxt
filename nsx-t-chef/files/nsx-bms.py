@@ -248,10 +248,11 @@ def TnRegister(tnid):
         transportZoneId = nsxData['tn']['transport_zone_id']
         uplinkProfileId = nsxData['tn']['uplink_profile_id']
         pnics = nsxData['tn']['pnics']
+        hostSwitchName = nsxData['tn']['host_switch_name']
 
     host_switch = {
         "pnics": pnics,
-        "host_switch_name": "nsxvswitch",
+        "host_switch_name": hostSwitchName,
         "host_switch_profile_ids": [
             {
                 "key": "UplinkHostSwitchProfile",
