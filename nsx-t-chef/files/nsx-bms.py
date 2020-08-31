@@ -22,7 +22,7 @@ else:
     import http.client as compat23_httplib
 import uuid
 from base64 import b64encode
-
+from os import path
 
 NSX_CONFIG_FILE = "/opt/vmware/nsx-opsagent/scripts/nsx-config.json"
 NSX_VIFID_FILE = "/opt/vmware/nsx-opsagent/scripts/vifid"
@@ -220,11 +220,26 @@ def GetTnUuid():
 def TnRealization(tnid):
     global mgrIP, mgrUserName, mgrPassWord, mgrThumbPrint
     mpURL = "/api/v1/transport-nodes/" + tnid + "/state"
-
     print("GET " + mpURL)
     for tries in range(0, 20):
-        status, json_resp, text, resp = nsx_api_request(mgrIP, 443, mgrThumbPrint,
-                {"username": mgrUserName, "password": mgrPassWord}, "GET", mpURL)
+        try:
+            status, json_resp, text, resp = nsx_api_request(mgrIP, 443, mgrThumbPrint,
+                    {"username": mgrUserName, "password": mgrPassWord}, "GET", mpURL)
+        except ApiException as apiEx:
+            if apiEx.message == "MSG_API_CONNECTION_FAILED":
+                print("Got MSG_API_CONNECTION_FAILED exception. Bring up uplink")
+                with open(NSX_CONFIG_FILE) as nsx_json_file:
+                    nsxData = simplejson.load(nsx_json_file)
+                uplinkNic = nsxData['tn']['pnics'][0]['device_name']
+                with open('/sys/class/net/{}/operstate'.format(uplinkNic)) as f:
+                    upState = f.read().rstrip()
+                briUpStatePath = '/sys/class/net/~{}/operstate'.format(uplinkNic)
+                if path.exists(briUpStatePath) and upState != 'up':
+                    os.system('ifconfig {} up'.format(uplinkNic))
+                pass
+                continue
+            else:
+                raise
 
         print(status)
         print(json_resp['state'])
