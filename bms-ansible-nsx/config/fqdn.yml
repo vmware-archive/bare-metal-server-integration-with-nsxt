@@ -1,6 +1,6 @@
 ################################################################################
 ### Copyright (C) 2018 VMware, Inc.  All rights reserved.
-### SPDX-License-Identifier: BSD-2-Clause
+### SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
 ################################################################################
 - name: get fqdn tag
   command: bash -c "grep \<fqdn\> /etc/vmware/nsx/controller-info.xml | cat"
@@ -8,6 +8,6 @@
 - name: set fqdn option
   set_fact:
     FQDN: true
-  when: fqdn_tag.stdout != ""  
+  when: fqdn_tag.stdout != ""
 - debug:
     var: FQDN

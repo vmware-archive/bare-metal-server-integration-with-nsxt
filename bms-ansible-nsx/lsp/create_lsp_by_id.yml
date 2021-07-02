@@ -1,6 +1,6 @@
 ################################################################################
-### Copyright (C) 2019 VMware, Inc.  All rights reserved.
-### SPDX-License-Identifier: BSD-2-Clause
+### Copyright (C) 2018 VMware, Inc.  All rights reserved.
+### SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
 ################################################################################
 - name: check ls id and vif id
   fail: msg="ls_id or vif_id not defined"

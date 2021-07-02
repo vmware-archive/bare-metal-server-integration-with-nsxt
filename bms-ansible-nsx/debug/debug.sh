@@ -1,5 +1,5 @@
 # Copyright (C) 2018 VMware, Inc.  All rights reserved.
-# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-License-Identifier: BSD-2-Clause OR GPL-3.0-only
 
 echo "netstat -an |grep 1234"
 netstat -an |grep 1234

@@ -1,16 +1,16 @@
 # Ansbile for Bare Metal Server
-Ansible for Bare Metal Server is a set of automated scripts to setup Application 
+Ansible for Bare Metal Server is a set of automated scripts to setup Application
 Interface for Bare Metal Server;
 
 # Support Modes
-1. Static  
+1. Static
 Enable static configuration on Application Interface;
 
-2. Dhcp  
+2. Dhcp
 Enable dhcp configuration on Application Interface;
 
-3. Migration  
-This mode supports Management and Application sharing the same IP;  
+3. Migration
+This mode supports Management and Application sharing the same IP;
 Enable migration mode on Application Interface; Also named as “underlay mode” or
 "VLAN-0 mode";
 
@@ -86,7 +86,7 @@ $ansible-playbook -i hosts restore.yml
 ```
 
 ### 5. Bootstrap flow in underlay mode
-In underlay mode, since management and application traffic share a single IP, we need a way to differentiate the forwarding of the types of traffic, and the management traffic should bypass NSX logical pipeline, otherwise any misconfiguration of NSX networking and policies will cause connectivity loss of the Bare Metal server and could not be recovered.  
+In underlay mode, since management and application traffic share a single IP, we need a way to differentiate the forwarding of the types of traffic, and the management traffic should bypass NSX logical pipeline, otherwise any misconfiguration of NSX networking and policies will cause connectivity loss of the Bare Metal server and could not be recovered.
 So here we add high priority flows(classified by remote IP, proto, local/remote ports) for the management traffic when setup application interface, we call high priority flow as bootstrap flow;
 NSX Manager and Controller endpoints will be loaded in bootstrap flow by default;
 If Manager/Controller endpoint is FQDN, that won't support bootstrap flow.
@@ -94,7 +94,7 @@ If Manager/Controller endpoint is FQDN, that won't support bootstrap flow.
 If User want to add/delete/update bootstrap flow, pls. follow below steps:
 ```bash
 1. update "templates/nsx-baremetal.j2";
-2. $ansible-playbook -i hosts config/bms_update.yml 
+2. $ansible-playbook -i hosts config/bms_update.yml
 ```
 
 
