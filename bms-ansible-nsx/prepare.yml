@@ -21,14 +21,26 @@
       command: cat /etc/lsb-release
       register: ubuntu_version
       when: ubuntu_stat_result.stat.exists == True
-    - name: create check rhel dependency script
+    - name: get redhat release
+      command: cat /etc/redhat-release
+      register: redhat_version
+      when: rhel_stat_result.stat.exists == True
+    - name: create check rhel7 dependency script
       template:
-        src: templates/check_rhel_dependency.j2
-        dest: /tmp/check_rhel_dependency.sh
+        src: templates/check_rhel7_dependency.j2
+        dest: /tmp/check_rhel7_dependency.sh
         owner: root
         group: root
         mode: 0755
-      when: rhel_stat_result.stat.exists == True
+      when: (rhel_stat_result.stat.exists == True) and (redhat_version.stdout.find("release 7") != -1)
+    - name: create check rhel8 dependency script
+      template:
+        src: templates/check_rhel8_dependency.j2
+        dest: /tmp/check_rhel8_dependency.sh
+        owner: root
+        group: root
+        mode: 0755
+      when: (rhel_stat_result.stat.exists == True) and (redhat_version.stdout.find("release 8") != -1)
     - name: create check suse dependency script
       template:
         src: templates/check_suse_dependency.j2
@@ -53,9 +65,12 @@
         group: root
         mode: 0755
       when: (ubuntu_stat_result.stat.exists == True) and (ubuntu_version.stdout.find("=18") != -1)
-    - name: run check rhel dependency script
-      command: bash /tmp/check_rhel_dependency.sh
-      when: rhel_stat_result.stat.exists == True
+    - name: run check rhel7 dependency script
+      command: bash /tmp/check_rhel7_dependency.sh
+      when: (rhel_stat_result.stat.exists == True) and (redhat_version.stdout.find("release 7") != -1)
+    - name: run check rhel8 dependency script
+      command: bash /tmp/check_rhel8_dependency.sh
+      when: (rhel_stat_result.stat.exists == True) and (redhat_version.stdout.find("release 8") != -1)
     - name: run check suse dependency script
       command: bash /tmp/check_suse_dependency.sh
       when: suse_stat_result.stat.exists == True
@@ -65,10 +80,14 @@
     - name: run check ubuntu18 dependency script
       command: bash /tmp/check_ubuntu18_dependency.sh
       when: (ubuntu_stat_result.stat.exists == True) and (ubuntu_version.stdout.find("=18") != -1)
-    - name: set rhel dependency
+    - name: set rhel7 dependency
       set_fact:
-        dependency: "{{ rhel_dependency }}"
-      when: rhel_stat_result.stat.exists == True
+        dependency: "{{ rhel7_dependency }}"
+      when: (rhel_stat_result.stat.exists == True) and (redhat_version.stdout.find("release 7") != -1)
+    - name: set rhel8 dependency
+      set_fact:
+        dependency: "{{ rhel8_dependency }}"
+      when: (rhel_stat_result.stat.exists == True) and (redhat_version.stdout.find("release 8") != -1)
     - name: set ubuntu16 dependency
       set_fact:
         dependency: "{{ ubuntu16_dependency }}"

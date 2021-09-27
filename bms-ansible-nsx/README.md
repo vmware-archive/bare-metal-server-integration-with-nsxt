@@ -106,3 +106,9 @@ $ansible-playbook -i hosts prepare.yml
 ```bash
 $ansible-playbook -i hosts unprepare.yml
 ```
+
+### 8. Troubleshooting
+1. Ansible depends on python-selinux on SE enabled Linux hosts. On some platforms ansible might report the error: Aborting, target uses selinux but python bindings (libselinux-python) aren't installed!
+There are two ways to fix the error:
+a. Disable SELinux on the Linux hosts.
+b. If python-selinux was installed on the host and ansible still reports this error, it might be caused by python version incompitable. Following the KB to fix the python version issue: https://access.redhat.com/solutions/5674911.

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Copyright (C) 2018 VMware, Inc.  All rights reserved.
+# SPDX-License-Identifier: BSD-2-Clause
+
+mkdir -p /opt/baremetal/
+dependency=/opt/baremetal/miss-dependency
+rm -rf $dependency
+touch $dependency
+
+{% for item in rhel7_dependency %}
+    echo {{ item }}
+    output=$(rpm -qa |grep {{ item }})
+    if [ ! -z "$output" ]; then
+        echo "installed"
+    else
+        echo "no installed"
+        echo {{ item }} >> $dependency
+    fi
+{% endfor %}
+
