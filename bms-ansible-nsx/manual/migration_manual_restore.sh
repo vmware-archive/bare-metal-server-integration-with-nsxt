@@ -52,6 +52,9 @@ isRhel() {
     if [ "$host_os" == "RedHatEnterpriseServer" ]; then
         return 0
     fi
+    if [ "$host_os" == "RedHatEnterprise" ]; then
+        return 0
+    fi
     if [ "$host_os" == "CentOS" ]; then
         return 0
     fi
