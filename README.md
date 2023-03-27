@@ -11,8 +11,6 @@ Branch nsx-t-chef-xxx is Chef Cookbook for supporting Bare Metal Server integrat
 ## Releases & Major Branches
 The playbooks in master branch are used for development.
 
-Branch release-4.1.0 is compatible with NSX-T 4.1.0
-
 Branch release-4.0.0 is compatible with NSX-T 4.0.0
 
 Branch release-3.2.0 is compatible with NSX-T 3.2.0
